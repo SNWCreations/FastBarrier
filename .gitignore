@@ -110,3 +110,5 @@ buildNumber.properties
 run/
 
 .vscode/
+
+!gradle/wrapper/gradle-wrapper.jar
