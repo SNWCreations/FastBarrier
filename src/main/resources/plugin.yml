@@ -1,0 +1,5 @@
+name: FastBarrier
+version: '${version}'
+author: "SNWCreations"
+main: snw.fastbarrier.FastBarrier
+api-version: '1.20'
