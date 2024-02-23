@@ -11,3 +11,6 @@ max-undo-steps: 30
 
 # 当玩家预定的位置超过这个数时，发出警告，并建议玩家先提交一次。
 queue-warn-threshold: 300
+
+# 墙的方块
+block: "minecraft:barrier"

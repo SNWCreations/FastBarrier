@@ -13,7 +13,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import static snw.fastbarrier.PlayerUtils.playSound;
 
@@ -90,6 +92,16 @@ public final class RootCommand {
             } else {
                 fail(sender, "没有可重新执行的操作！");
             }
+        } else {
+            fail(sender, "你还没有会话！");
+        }
+    }
+
+    @Execute(name = "block")
+    void block(@Context Player sender, @Arg Material type) {
+        if (Session.has(sender)) {
+            Session.getOrCreate(sender).setBlockType(type);
+            ok(sender, "操作成功。(这个设置只对你自己生效)");
         } else {
             fail(sender, "你还没有会话！");
         }

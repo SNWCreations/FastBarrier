@@ -15,20 +15,12 @@ import java.util.List;
 
 public record CompareAndPlaceAction(@NonNull Location basePoint, @Nullable Material from, @NonNull Material to, int height) implements Runnable {
 
-    public static CompareAndPlaceAction airToBarrier(Location location, int height) {
-        return new CompareAndPlaceAction(location, Material.AIR, Material.BARRIER, height);
+    public static CompareAndPlaceAction airTo(Location base, Material newType, int height) {
+        return new CompareAndPlaceAction(base, Material.AIR, newType, height);
     }
 
-    public static List<CompareAndPlaceAction> airToBarrier(Collection<Location> locations, int height) {
-        return locations.stream().map(i -> airToBarrier(i, height)).toList();
-    }
-
-    public static CompareAndPlaceAction barrierToAir(Location location, int height) {
-        return new CompareAndPlaceAction(location, Material.BARRIER, Material.AIR, height);
-    }
-
-    public static List<CompareAndPlaceAction> barrierToAir(Collection<Location> locations, int height) {
-        return locations.stream().map(i -> barrierToAir(i, height)).toList();
+    public static List<CompareAndPlaceAction> airTo(Collection<Location> base, Material newType, int height) {
+        return base.stream().map(it -> airTo(it, newType, height)).toList();
     }
 
     public CompareAndPlaceAction reverse() {

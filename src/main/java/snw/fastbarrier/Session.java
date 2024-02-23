@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -26,6 +27,8 @@ public final class Session {
     private boolean active = true;
     @Setter
     private int height = Config.wallHeight();
+    @Setter
+    private Material blockType = Config.newBlockType();
 
     // return queued location count
     public int append(Location location) {
@@ -40,7 +43,7 @@ public final class Session {
     // return false if no location is queued
     public boolean startPlacing() {
         if (!queuedLocation.isEmpty()) {
-            final List<CompareAndPlaceAction> actions = CompareAndPlaceAction.airToBarrier(queuedLocation, height);
+            final List<CompareAndPlaceAction> actions = CompareAndPlaceAction.airTo(queuedLocation, blockType, height);
             BlockPlacer.queue.addAll(actions);
             undoQueue.addFirst(ImmutableList.copyOf(actions));
             if (undoQueue.size() > Config.maxUndoSteps()) {
