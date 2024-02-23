@@ -59,9 +59,9 @@ public final class RootCommand {
                         "检测到你的会话中还有未提交的区域！如果要强制销毁会话，请在 10 秒内再次执行此命令。");
                 playSound(sender, Sound.ENTITY_VILLAGER_TRADE);
                 final BukkitTask task = FastBarrier.instance.getServer()
-                        .getScheduler().runTaskLater(FastBarrier.instance, () -> {
-                            inQueueForceDestroy.remove(uuid);
-                        }, 200L);
+                        .getScheduler()
+                        .runTaskLater(FastBarrier.instance,
+                                () -> inQueueForceDestroy.remove(uuid), 200L);
                 inQueueForceDestroy.put(uuid, task);
             }
         } else {
