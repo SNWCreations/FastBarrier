@@ -1,7 +1,12 @@
 package snw.fastbarrier;
 
+import com.google.common.base.Preconditions;
+import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.function.Predicate;
 
 public final class Config {
     private Config() {
@@ -35,20 +40,25 @@ public final class Config {
         return ifLargerThanZeroOrElse(intConf("max-undo-steps"), Integer.MAX_VALUE);
     }
 
-    private static Material materialConf(String path, Material def) {
+    private static @Nullable Material materialConf(String path) {
         String raw = conf().getString(path);
         if (raw == null) {
-            return def;
+            return null;
         }
-        final Material material = Material.matchMaterial(raw);
-        if (material != null && material.isBlock()) {
-            return material;
+        return Material.matchMaterial(raw);
+    }
+
+    private static <T> T matchOrElse(T val, Predicate<T> predicate, @NonNull T def) {
+        if (val != null && predicate.test(val)) {
+            return val;
         } else {
+            Preconditions.checkArgument(predicate.test(def),
+                    "else value must also match the predicate");
             return def;
         }
     }
 
     public static Material newBlockType() {
-        return materialConf("block", Material.BARRIER);
+        return matchOrElse(materialConf("block"), Material::isBlock, Material.BARRIER);
     }
 }
