@@ -10,10 +10,9 @@ public final class BlockPlacer implements Runnable {
     @Override
     public void run() {
         int steps = Config.processedUnitPerTick();
-        CompareAndPlaceAction action = queue.poll();
-        while (action != null && steps-- >= 0) {
+        CompareAndPlaceAction action;
+        while ((action = queue.poll()) != null && steps-- >= 0) {
             action.run();
-            action = queue.poll();
         }
     }
 }
