@@ -58,18 +58,23 @@ public final class Session {
     }
 
     public boolean undo() {
-        return queueReversedActionAndSave(undoQueue, redoQueue);
+        return queueReversedActionAndSave(undoQueue, redoQueue, true);
     }
 
     public boolean redo() {
-        return queueReversedActionAndSave(redoQueue, undoQueue);
+        return queueReversedActionAndSave(redoQueue, undoQueue, false);
     }
 
-    private boolean queueReversedActionAndSave(Deque<List<CompareAndPlaceAction>> from, Deque<List<CompareAndPlaceAction>> to) {
+    private boolean queueReversedActionAndSave(Deque<List<CompareAndPlaceAction>> from, Deque<List<CompareAndPlaceAction>> to, boolean first) {
         if (!from.isEmpty()) {
+            final List<CompareAndPlaceAction> toReverse;
+            if (first) {
+                toReverse = from.removeFirst();
+            } else {
+                toReverse = from.removeLast();
+            }
             final List<CompareAndPlaceAction> actions =
-                    from.removeLast()
-                            .stream()
+                    toReverse.stream()
                             .map(CompareAndPlaceAction::reverse)
                             .toList();
             BlockPlacer.queue.addAll(actions);
